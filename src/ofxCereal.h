@@ -16,14 +16,14 @@
  
  Usage : 
  // Most simple usage
- class MyClassSimple {
+ struct MyClassSimple {
     ofVec3f pos;
     ofQuaternion rot;
     OFX_CEREAL_DEFINE(pos, rot);
  };
  
  // With Name-Value Pair
- class MyClass {
+ struct MyClass {
     ofVec3f pos;
     ofQuaternion rot;
     OFX_CEREAL_DEFINE(CEREAL_NVP(pos), CEREAL_NVP(rot));
