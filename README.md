@@ -46,7 +46,7 @@ WIP. OF version >= 0.9.0
             jo << pts;
             ofxCereal::jsonin ji(ss);
             ji >> myclass;
-            ji << pts;
+            ji >> pts;
         }
     };
 
