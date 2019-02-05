@@ -4,15 +4,19 @@
 #pragma once
 
 #include "ofBaseTypes.h"
+#include "ofConstants.h"
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/xml.hpp>
-#include <cereal/archives/json.hpp>
+#include <cereal/archives/json2.hpp>
 
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/map.hpp>
 
+#if OF_VERSION_MINOR >= 10
+#include "ofVectorMath.h"
+#endif
 /*
  
  Usage : 
@@ -109,10 +113,67 @@ namespace cereal
     }
     
     template<class Archive>
-    void serialize(Archive & archive, ofMatrix4x4 & m)
+    void save(Archive & archive, ofMatrix4x4 const & m)
     {
         archive(cereal::make_nvp("mat", m._mat));
     }
+    
+    template<class Archive>
+    void load(Archive & archive, ofMatrix4x4 & m)
+    {
+        archive(cereal::make_nvp("mat", m._mat));
+    }
+    
+    // glm (over of 0.10.0)
+#if OF_VERSION_MINOR >= 10
+    template<class Archive>
+    void serialize(Archive & archive, glm::vec2 & m)
+    {
+        archive(cereal::make_nvp("x", m.x),
+                cereal::make_nvp("y", m.y));
+    }
+    
+    template<class Archive>
+    void serialize(Archive & archive, glm::vec3 & m)
+    {
+        archive(cereal::make_nvp("x", m.x),
+                cereal::make_nvp("y", m.y),
+                cereal::make_nvp("z", m.z));
+    }
+    
+    template<class Archive>
+    void serialize(Archive & archive, glm::vec4 & m)
+    {
+        archive(cereal::make_nvp("x", m.x),
+                cereal::make_nvp("y", m.y),
+                cereal::make_nvp("z", m.z),
+                cereal::make_nvp("w", m.w));
+    }
+    
+    template<class Archive>
+    void serialize(Archive & archive, glm::quat & m)
+    {
+        archive(cereal::make_nvp("x", m.x),
+                cereal::make_nvp("y", m.y),
+                cereal::make_nvp("z", m.z),
+                cereal::make_nvp("w", m.w));
+    }
+    
+    template<class Archive>
+    void save(Archive & archive, glm::mat4 const & m)
+    {
+        ofMatrix4x4 ofm = toOf(m);
+        save(archive, ofm);
+    }
+
+    template<class Archive>
+    void load(Archive & archive, glm::mat4 & m)
+    {
+        ofMatrix4x4 ofm;
+        load(archive, ofm);
+        m = toGlm(ofm);
+    }
+#endif
     
     // some aliases
     using jsonin  = JSONInputArchive;

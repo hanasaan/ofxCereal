@@ -89,7 +89,7 @@ public:
     
     void mouseDragged(int x, int y, int button)
     {
-        poly.addVertex(ofVec2f(x,y));
+        poly.addVertex(glm::vec3(x,y,0));
         data.points.push_back(ofVec3f(x,0,y));
         data.color = ofColor::fromHsb(ofRandom(255), 255, 255);
     }
