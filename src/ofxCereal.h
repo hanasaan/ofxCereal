@@ -113,13 +113,7 @@ namespace cereal
     }
     
     template<class Archive>
-    void save(Archive & archive, ofMatrix4x4 const & m)
-    {
-        archive(cereal::make_nvp("mat", m._mat));
-    }
-    
-    template<class Archive>
-    void load(Archive & archive, ofMatrix4x4 & m)
+    void serialize(Archive & archive, ofMatrix4x4 & m)
     {
         archive(cereal::make_nvp("mat", m._mat));
     }
@@ -132,7 +126,7 @@ namespace cereal
         archive(cereal::make_nvp("x", m.x),
                 cereal::make_nvp("y", m.y));
     }
-    
+
     template<class Archive>
     void serialize(Archive & archive, glm::vec3 & m)
     {
@@ -140,7 +134,7 @@ namespace cereal
                 cereal::make_nvp("y", m.y),
                 cereal::make_nvp("z", m.z));
     }
-    
+
     template<class Archive>
     void serialize(Archive & archive, glm::vec4 & m)
     {
@@ -149,7 +143,7 @@ namespace cereal
                 cereal::make_nvp("z", m.z),
                 cereal::make_nvp("w", m.w));
     }
-    
+
     template<class Archive>
     void serialize(Archive & archive, glm::quat & m)
     {
@@ -160,19 +154,14 @@ namespace cereal
     }
     
     template<class Archive>
-    void save(Archive & archive, glm::mat4 const & m)
+    void serialize(Archive & archive, glm::mat4 & m)
     {
-        ofMatrix4x4 ofm = toOf(m);
-        save(archive, ofm);
+        archive(cereal::make_nvp("mat0", m[0]));
+        archive(cereal::make_nvp("mat1", m[1]));
+        archive(cereal::make_nvp("mat2", m[2]));
+        archive(cereal::make_nvp("mat3", m[3]));
     }
 
-    template<class Archive>
-    void load(Archive & archive, glm::mat4 & m)
-    {
-        ofMatrix4x4 ofm;
-        load(archive, ofm);
-        m = toGlm(ofm);
-    }
 #endif
     
     // some aliases
