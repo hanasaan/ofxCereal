@@ -190,7 +190,7 @@ namespace cereal
 			return true;
 		}
 #else
-		std::ifstream ifs(filename, std::ios::binary);
+		std::ifstream ifs(ofToDataPath(filename, true), std::ios::binary);
 		if (ifs.is_open()) {
 			iarchive(ifs) >> obj;
 			return true;
