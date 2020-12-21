@@ -183,11 +183,19 @@ namespace cereal
     template<typename iarchive, typename T>
     bool load(string filename, T& obj)
     {
-        ofFile file(filename);
-        if (file.exists()) {
-            iarchive(file) >> obj;
-            return true;
-        }
+#ifndef _MSC_VER
+		ofFile file(filename);
+		if (file.exists()) {
+			iarchive(file) >> obj;
+			return true;
+		}
+#else
+		std::ifstream ifs(filename, std::ios::binary);
+		if (ifs.is_open()) {
+			iarchive(ifs) >> obj;
+			return true;
+		}
+#endif
         return false;
     }
     
